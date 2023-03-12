@@ -1,0 +1,22 @@
+@import url('https://fonts.googleapis.com/css2?family=Nunito&display=swap');
+html {
+  //   min-height: 100vh;
+}
+body {
+  min-height: 100vh;
+  font-family: 'Nunito', sans-serif !important;
+  padding: 10rem 0;
+}
+
+.navbar {
+  position: fixed;
+  top: 0;
+  z-index: 1000;
+  width: 100%;
+}
+.footer {
+  position: fixed;
+  bottom: 0;
+  z-index: -1;
+  width: 100%;
+}

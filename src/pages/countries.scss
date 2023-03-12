@@ -1,0 +1,14 @@
+.countries {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  overflow-y: scroll;
+}
+.country-card_grid > * {
+  align-self: center;
+  justify-self: center;
+}
+
+.sort-countries {
+  margin: 2rem 0;
+}
