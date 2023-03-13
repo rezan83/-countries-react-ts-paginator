@@ -14,12 +14,12 @@ const Paginator: FC<IPaginatorProps> = ({ pages }) => {
   const pagerBtns = useMemo(() => {
     let pagerBtns: JSX.Element[] = [];
     for (let index = 0; index < pages; index++) {
-      if (index < selectedPage + 3 && index > selectedPage - 5) {
+      if (index < selectedPage + 4 && index > selectedPage - 4) {
         pagerBtns.push(
           <Button
             size={'xs'}
             bg={selectedPage === index ? 'blue.400' : ''}
-            onClick={() => chooseSelected(index)}
+            onClick={() => chooseSelected(index + 1)}
             variant={'link'}
             key={index}>
             {index + 1}
@@ -38,7 +38,7 @@ const Paginator: FC<IPaginatorProps> = ({ pages }) => {
   };
 
   const changeSelected = (num: number) => {
-    const neuNum = selectedPage + num +1;
+    const neuNum = selectedPage + num + 1;
     if (neuNum < pages && neuNum >= 1) {
       dispatch(setSelectedPage(neuNum));
     }
