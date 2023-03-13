@@ -1,10 +1,8 @@
 import React, { FC } from 'react';
 import {
-  Card,
+  Tr,
+  Td,
   Image,
-  Heading,
-  Text,
-  SimpleGrid,
   Button,
   useDisclosure,
   Alert,
@@ -26,7 +24,7 @@ interface ICountryProps {
   country: ICountry;
 }
 
-const Country: FC<ICountryProps> = ({ country }) => {
+const CountryT: FC<ICountryProps> = ({ country }) => {
   const isfavorite = useAppSelector((state: RootState) =>
     state.countryR.favoriteCountries.includes(country.name.common)
   );
@@ -48,52 +46,49 @@ const Country: FC<ICountryProps> = ({ country }) => {
     navigate('/details');
   };
   return (
-    <Card
-      className="country-card"
-      style={{ alignContent: 'center' }}
-      overflow="hidden"
-      variant="outline">
-      <SimpleGrid
-        className="country-card_grid"
-        spacing={4}
-        templateColumns="repeat(auto-fill, minmax(200px, 1fr))">
+    <Tr>
+      <Td>
         <Image
           objectFit="cover"
           maxW={{ base: '100%', sm: '200px' }}
           src={country.flags.png}
-          alt="Caffe Latte"
+          alt="Flag"
         />
-        <Button>
-          <Heading size="md" onClick={showDetailsPage}>
-            {country.name.common} <ArrowForwardIcon />
-          </Heading>
+      </Td>
+      <Td>
+        <Button onClick={showDetailsPage}>
+          {country.name.common}
+          <ArrowForwardIcon />
         </Button>
-
-        <Text py="2">{country.population}</Text>
-
-        <Text py="2">{country.region}</Text>
+      </Td>
+      <Td>{country.population}</Td>
+      <Td>{country.region}</Td>
+      <Td>
+        {' '}
         <UnorderedList>
           {country.languages &&
             Object.values(country.languages).map(lang => {
               return <ListItem key={lang}>{lang}</ListItem>;
             })}
         </UnorderedList>
-        <Button onClick={toggleFavoriteHandel}>
-          <StarIcon color={isfavorite ? 'yellow.400' : ''} />
-        </Button>
-      </SimpleGrid>
-
-      {isVisible && (
-        <Alert status="success">
-          <AlertIcon />
-          <Box>
-            <AlertTitle>Success!</AlertTitle>
-            <AlertDescription>{country.name.common} added to favorites</AlertDescription>
-          </Box>
-        </Alert>
-      )}
-    </Card>
+      </Td>
+      <Td>
+        {isVisible ? (
+          <Alert status="success" position="absolute" right="0" bg="green.400">
+            <AlertIcon />
+            <Box>
+              <AlertTitle>Success!</AlertTitle>
+              <AlertDescription>{country.name.common} added to favorites</AlertDescription>
+            </Box>
+          </Alert>
+        ) : (
+          <Button onClick={toggleFavoriteHandel}>
+            <StarIcon color={isfavorite ? 'yellow.400' : ''} />
+          </Button>
+        )}
+      </Td>
+    </Tr>
   );
 };
 
-export default Country;
+export default CountryT;

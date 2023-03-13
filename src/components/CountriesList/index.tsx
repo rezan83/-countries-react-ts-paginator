@@ -1,8 +1,10 @@
 import React, { FC } from 'react';
+import { Table, Tbody, TableCaption, TableContainer } from '@chakra-ui/react';
 import { useAppSelector } from '../../app/hooks';
 import { RootState } from '../../app/store';
-import Country from './Country';
 import { ICountry } from '../../interfaces/country';
+import Country from './Country';
+import CountriesTHeader from './CountriesTHeader';
 
 interface ICountriesProps {
   showFavorite?: boolean;
@@ -49,9 +51,17 @@ const CountriesList: FC<ICountriesProps> = ({ showFavorite }) => {
 
   return (
     <>
-      {countries.map((country: ICountry) => {
-        return <Country key={country.name.common} country={country} />;
-      })}
+      <TableContainer>
+        <Table size="sm" variant="striped" colorScheme="teal">
+          <TableCaption>List of all countries</TableCaption>
+          <CountriesTHeader />
+          <Tbody>
+            {countries.map((country: ICountry) => {
+              return <Country key={country.name.common} country={country} />;
+            })}
+          </Tbody>
+        </Table>
+      </TableContainer>
     </>
   );
 };

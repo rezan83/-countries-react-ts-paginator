@@ -11,7 +11,12 @@ import {
   CardFooter,
   Button,
   Avatar,
-  SimpleGrid
+  SimpleGrid,
+  useDisclosure,
+  Alert,
+  AlertTitle,
+  AlertDescription,
+  AlertIcon
 } from '@chakra-ui/react';
 import { BiMap } from 'react-icons/bi';
 import { useAppDispatch, useAppSelector } from '../app/hooks';
@@ -25,8 +30,15 @@ const Details: FC = () => {
     showCountry ? state.countryR.favoriteCountries.includes(showCountry.name.common) : false
   );
   const dispatch = useAppDispatch();
+  const { isOpen: isVisible, onClose, onOpen } = useDisclosure({ defaultIsOpen: false });
   const toggleFavoriteHandel = () => {
-    dispatch(toggleFavorite(showCountry?.name.common));
+    showCountry && dispatch(toggleFavorite(showCountry.name.common));
+    if (!isfavorite) {
+      onOpen();
+      setTimeout(() => {
+        onClose();
+      }, 2000);
+    }
   };
   return (
     <Card w="clamp(300px, 80%, 80rem)" m="0 auto" p="2rem">
@@ -75,9 +87,19 @@ const Details: FC = () => {
               <Button flex="1" variant="ghost" leftIcon={<BiMap />}></Button>
             </a>
 
-            <Button onClick={toggleFavoriteHandel}>
-              <StarIcon color={isfavorite ? 'yellow' : ''} />
-            </Button>
+            {isVisible ? (
+              <Alert status="success" position="absolute" right="0" bg="green.400">
+                <AlertIcon />
+                <Box>
+                  <AlertTitle>Success!</AlertTitle>
+                  <AlertDescription>{showCountry.name.common} added to favorites</AlertDescription>
+                </Box>
+              </Alert>
+            ) : (
+              <Button onClick={toggleFavoriteHandel}>
+                <StarIcon color={isfavorite ? 'yellow.400' : ''} />
+              </Button>
+            )}
           </CardFooter>
         </>
       )}
