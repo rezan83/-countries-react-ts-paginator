@@ -1,5 +1,6 @@
 # FRONT END PROJECT
 
+# project link: https://countries-proj.netlify.app/
 ![React](https://img.shields.io/badge/React-v.18-blue)
 ![Redux toolkit](https://img.shields.io/badge/Redux-v.1.9-purple)
 ![TypeScript](https://img.shields.io/badge/TypeScript-v.4.9-green)
