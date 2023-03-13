@@ -18,7 +18,7 @@ const SearchCountries: FC = () => {
     setSearch('');
   };
   return (
-    <Box className="search-countries" w='80%' m='0 auto'>
+    <Box className="search-countries" w='80%' m='2rem auto'>
       <FormControl display="flex" flexWrap="wrap" alignItems="end"  justifyContent="space-between">
         <Box w="70%">
           <FormLabel>Search Name</FormLabel>

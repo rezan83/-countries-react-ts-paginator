@@ -27,6 +27,7 @@ interface IState {
   showCountry: ICountry | null;
   isLoading: boolean;
   isFetchError: boolean;
+  selectedPage: number;
 }
 const initialState: IState = {
   countries: [],
@@ -36,12 +37,16 @@ const initialState: IState = {
   searchQuery: '',
   showCountry: null,
   isLoading: true,
-  isFetchError: false
+  isFetchError: false,
+  selectedPage: 0
 };
 const countrySlice = createSlice({
   name: 'countries',
   initialState,
   reducers: {
+    setSelectedPage: (state, action) => {
+      state.selectedPage = action.payload-1;
+    },
     setSearchQuery: (state, action) => {
       state.searchQuery = action.payload;
     },
@@ -108,8 +113,13 @@ const countrySlice = createSlice({
   }
 });
 
-export const { setSearchQuery, toggleFavorite, toggleSortIsApplyed, toggleSortOrder } =
-  countrySlice.actions;
+export const {
+  setSearchQuery,
+  toggleFavorite,
+  toggleSortIsApplyed,
+  toggleSortOrder,
+  setSelectedPage
+} = countrySlice.actions;
 
 // The function below is called a selector and allows us to select a value from
 // the state. Selectors can also be defined inline where they're used instead of
