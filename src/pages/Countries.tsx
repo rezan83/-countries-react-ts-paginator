@@ -1,7 +1,6 @@
 import React, { FC } from 'react';
 import CountriesList from '../components/CountriesList';
 import SearchCountries from '../components/SearchCountries';
-import './countries.scss';
 
 interface ICountriesProps {
   showFavorite?: boolean;
