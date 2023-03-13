@@ -1,34 +1,56 @@
 import React, { FC } from 'react';
-import { Card, Image, Heading, Text, SimpleGrid, Button } from '@chakra-ui/react';
-import { StarIcon } from '@chakra-ui/icons';
+import {
+  Card,
+  Image,
+  Heading,
+  Text,
+  SimpleGrid,
+  Button,
+  useDisclosure,
+  Alert,
+  AlertIcon,
+  Box,
+  AlertDescription,
+  AlertTitle,
+  UnorderedList,
+  ListItem
+} from '@chakra-ui/react';
+import { ArrowForwardIcon, StarIcon } from '@chakra-ui/icons';
+import { useNavigate } from 'react-router-dom';
 import { RootState } from '../../app/store';
 import { useAppDispatch, useAppSelector } from '../../app/hooks';
 import { fetchCountryByName, toggleFavorite } from '../../redux/country/countrySlice';
 import { ICountry } from '../../interfaces/country';
-import { useNavigate } from 'react-router-dom';
 
 interface ICountryProps {
   country: ICountry;
 }
 
 const Country: FC<ICountryProps> = ({ country }) => {
-  const isfavorite = useAppSelector((state: RootState) => state.countryR.favoriteCountries.includes(country.name.common));
-  // const isfavorite = favoriteCountries.includes(country.name.common);
+  const isfavorite = useAppSelector((state: RootState) =>
+    state.countryR.favoriteCountries.includes(country.name.common)
+  );
   const dispatch = useAppDispatch();
-  const navigate = useNavigate()
+  const navigate = useNavigate();
+  const { isOpen: isVisible, onClose, onOpen } = useDisclosure({ defaultIsOpen: false });
   const toggleFavoriteHandel = () => {
     dispatch(toggleFavorite(country.name.common));
+    if (!isfavorite) {
+      onOpen();
+      setTimeout(() => {
+        onClose();
+      }, 2000);
+    }
   };
 
   const showDetailsPage = () => {
     dispatch(fetchCountryByName(country.name.common));
-    navigate('/details')
-  }
+    navigate('/details');
+  };
   return (
     <Card
       className="country-card"
       style={{ alignContent: 'center' }}
-      //   direction={{ base: 'column', sm: 'row' }}
       overflow="hidden"
       variant="outline">
       <SimpleGrid
@@ -41,25 +63,37 @@ const Country: FC<ICountryProps> = ({ country }) => {
           src={country.flags.png}
           alt="Caffe Latte"
         />
-
-        <Heading size="md" onClick={showDetailsPage}>{country.name.common}</Heading>
+        <Button>
+          <Heading size="md" onClick={showDetailsPage}>
+            {country.name.common} <ArrowForwardIcon />
+          </Heading>
+        </Button>
 
         <Text py="2">{country.population}</Text>
 
         <Text py="2">{country.region}</Text>
-        <ul>
+        <UnorderedList>
           {country.languages &&
             Object.values(country.languages).map(lang => {
-              return <li key={lang}>{lang}</li>;
+              return <ListItem key={lang}>{lang}</ListItem>;
             })}
-        </ul>
+        </UnorderedList>
         <Button onClick={toggleFavoriteHandel}>
-          <StarIcon color={isfavorite ? 'yellow' : ''} />
+          <StarIcon color={isfavorite ? 'yellow.400' : ''} />
         </Button>
       </SimpleGrid>
+
+      {isVisible && (
+        <Alert status="success">
+          <AlertIcon />
+          <Box>
+            <AlertTitle>Success!</AlertTitle>
+            <AlertDescription>{country.name.common} added to favorites</AlertDescription>
+          </Box>
+        </Alert>
+      )}
     </Card>
   );
 };
 
-
-export default Country
+export default Country;

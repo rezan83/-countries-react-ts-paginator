@@ -20,16 +20,16 @@ const SearchCountries: FC = () => {
   };
   return (
     <Box className="search-countries">
-      <FormControl display="flex" flexWrap="wrap" alignItems="end" justifyContent="space-between">
+      <FormControl display="flex" flexWrap="wrap" alignItems="end"  justifyContent="space-between">
         <Box w="70%">
           <FormLabel>Search Name</FormLabel>
           <Input type="search" value={search} onChange={handelSearchChange} />
         </Box>
         <Box>
-          <Button onClick={submitSearch}>
+          <Button onClick={submitSearch} bg="blue.400" mr='1rem'>
             Search <BiSearch />{' '}
           </Button>
-          <Button onClick={resetSearch} bg="red">
+          <Button onClick={resetSearch} bg="red.400">
             Reset
           </Button>
         </Box>

@@ -1,32 +1,62 @@
 import React, { useEffect } from 'react';
-import Countries from './pages/Countries';
-import { useAppDispatch } from './app/hooks';
-import { fetchAll } from './redux/country/countrySlice';
 import { ChakraProvider } from '@chakra-ui/react';
+import { Route, Routes } from 'react-router-dom';
+
+import Countries from './pages/Countries';
 import Navbar from './pages/shared/Navbar';
 import Footer from './pages/shared/Footer';
-import { Route, Routes } from 'react-router-dom';
 import Hero from './pages/Hero';
 import Details from './pages/Details';
-import NotFound from './pages/NotFound';
+import { useAppDispatch, useAppSelector } from './app/hooks';
+import { fetchAll } from './redux/country/countrySlice';
+import Loading from './pages/shared/Loading';
 
 function App() {
+  const isFetchError = useAppSelector(state => state.countryR.isFetchError);
+  const isLoading = useAppSelector(state => state.countryR.isLoading);
   const dispatch = useAppDispatch();
 
   useEffect(() => {
     dispatch(fetchAll());
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+  
   return (
     <div className="App">
       <ChakraProvider>
         <Navbar />
         <Routes>
           <Route path="/" element={<Hero />} />
-          <Route path="/countries" element={<Countries />} />
-          <Route path="/favorite" element={<Countries showFavorite />} />
-          <Route path="/details" element={<Details />} />
-          <Route path="*" element={<NotFound />} />
+          <Route path="/countries" element={
+           <>
+           {isFetchError && <Loading loadingType="error" />}
+           {isLoading && <Loading loadingType="loading" />}
+           {!isLoading && <Countries />}
+         </>
+          
+          
+          } />
+          <Route
+            path="/favorite"
+            element={
+              <>
+                {isFetchError && <Loading loadingType="error" />}
+                {isLoading && <Loading loadingType="loading" />}
+                {!isLoading && <Countries showFavorite />}
+              </>
+            }
+          />
+          <Route
+            path="/details"
+            element={
+              <>
+                {isFetchError && <Loading loadingType="error" />}
+                {isLoading && <Loading loadingType="loading" />}
+                {!isLoading && <Details />}
+              </>
+            }
+          />
+          <Route path="*" element={<Hero notFound />} />
         </Routes>
 
         <Footer />

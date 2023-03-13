@@ -3,14 +3,14 @@ import countryAPI from '../../api/countryAPI';
 import { ICountry } from '../../interfaces/country';
 
 export const fetchCountryByName = createAsyncThunk(
-  'posts/fetchByIdStatus',
+  'countries/fetchByIdStatus',
   async (countryName: string, thunkAPI) => {
     const [response] = await countryAPI.fetchByName(countryName);
     return response;
   }
 );
 
-export const fetchAll = createAsyncThunk('posts/fetchAllStatus', async thunkAPI => {
+export const fetchAll = createAsyncThunk('countries/fetchAllStatus', async thunkAPI => {
   const response = await countryAPI.fetchAll();
   return response;
 });
@@ -25,18 +25,18 @@ interface IState {
   sortCountriesName: ISort;
   sortCountriesPopulation: ISort;
   showCountry: ICountry | null;
-  loading: boolean;
-  fetchError: boolean;
+  isLoading: boolean;
+  isFetchError: boolean;
 }
 const initialState: IState = {
   countries: [],
-  favoriteCountries: ['Hungary'],
+  favoriteCountries: ['Egypt'],
   sortCountriesName: { isApplyed: false, order: 1 },
   sortCountriesPopulation: { isApplyed: false, order: 1 },
   searchQuery: '',
   showCountry: null,
-  loading: false,
-  fetchError: false
+  isLoading: true,
+  isFetchError: false
 };
 const countrySlice = createSlice({
   name: 'countries',
@@ -79,23 +79,31 @@ const countrySlice = createSlice({
   },
   extraReducers: builder => {
     builder.addCase(fetchCountryByName.fulfilled, (state, action) => {
-      state.loading = false;
-      state.fetchError = false;
+      state.isLoading = false;
+      state.isFetchError = false;
       state.showCountry = action.payload;
     });
     builder.addCase(fetchAll.fulfilled, (state, action) => {
-      state.loading = false;
-      state.fetchError = false;
+      state.isLoading = false;
+      state.isFetchError = false;
       state.countries = action.payload;
     });
 
-    builder.addCase(fetchAll.pending || fetchCountryByName.pending, (state, action) => {
-      state.loading = true;
-      state.fetchError = false;
+    builder.addCase(fetchAll.pending, (state, action) => {
+      state.isLoading = true;
+      state.isFetchError = false;
     });
-    builder.addCase(fetchAll.rejected || fetchCountryByName.rejected, (state, action) => {
-      state.loading = false;
-      state.fetchError = true;
+    builder.addCase(fetchAll.rejected, (state, action) => {
+      state.isLoading = false;
+      state.isFetchError = true;
+    });
+    builder.addCase(fetchCountryByName.pending, (state, action) => {
+      state.isLoading = true;
+      state.isFetchError = false;
+    });
+    builder.addCase(fetchCountryByName.rejected, (state, action) => {
+      state.isLoading = false;
+      state.isFetchError = true;
     });
   }
 });
