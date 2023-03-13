@@ -10,6 +10,7 @@ import Details from './pages/Details';
 import { useAppDispatch, useAppSelector } from './app/hooks';
 import { fetchAll } from './redux/country/countrySlice';
 import Loading from './pages/shared/Loading';
+import theme from './theme';
 
 function App() {
   const isFetchError = useAppSelector(state => state.countryR.isFetchError);
@@ -20,10 +21,10 @@ function App() {
     dispatch(fetchAll());
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
-  
+
   return (
     <div className="App">
-      <ChakraProvider>
+      <ChakraProvider theme={theme}>
         <Navbar />
         <Routes>
           <Route path="/" element={<Hero />} />
