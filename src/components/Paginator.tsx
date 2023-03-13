@@ -34,18 +34,18 @@ const Paginator: FC<IPaginatorProps> = ({ pages }) => {
   useEffect(() => {}, [pagerBtns]);
 
   const chooseSelected = (num: number) => {
-    dispatch(setSelectedPage(num + 1));
+    dispatch(setSelectedPage(num));
   };
 
   const changeSelected = (num: number) => {
-    const neuNum = selectedPage + num;
+    const neuNum = selectedPage + num +1;
     if (neuNum < pages && neuNum >= 1) {
       dispatch(setSelectedPage(neuNum));
     }
   };
   return (
     <SimpleGrid columns={11} m="0 auto">
-      <Button onClick={() => chooseSelected(0)}>
+      <Button onClick={() => chooseSelected(1)}>
         <ArrowLeftIcon />
       </Button>
       <Button onClick={() => changeSelected(-1)}>
@@ -57,7 +57,7 @@ const Paginator: FC<IPaginatorProps> = ({ pages }) => {
       <Button onClick={() => changeSelected(1)}>
         <ChevronRightIcon />
       </Button>
-      <Button onClick={() => chooseSelected(pages - 1)}>
+      <Button onClick={() => chooseSelected(pages)}>
         <ArrowRightIcon />
       </Button>
     </SimpleGrid>
