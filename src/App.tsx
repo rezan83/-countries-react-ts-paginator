@@ -2,17 +2,18 @@ import React, { useEffect } from 'react';
 import { ChakraProvider } from '@chakra-ui/react';
 import { Route, Routes } from 'react-router-dom';
 
+import { useAppDispatch, useAppSelector } from './app/hooks';
+import { fetchAll } from './redux/country/countrySlice';
 import Countries from './pages/Countries';
 import Navbar from './pages/shared/Navbar';
 import Footer from './pages/shared/Footer';
 import Hero from './pages/Hero';
 import Details from './pages/Details';
-import { useAppDispatch, useAppSelector } from './app/hooks';
-import { fetchAll } from './redux/country/countrySlice';
 import Loading from './pages/shared/Loading';
 import theme from './theme';
 
 function App() {
+  
   const isFetchError = useAppSelector(state => state.countryR.isFetchError);
   const isLoading = useAppSelector(state => state.countryR.isLoading);
   const dispatch = useAppDispatch();

@@ -18,19 +18,21 @@ import {
   AlertDescription,
   AlertIcon
 } from '@chakra-ui/react';
-import { BiMap } from 'react-icons/bi';
-import { useAppDispatch, useAppSelector } from '../app/hooks';
 import { StarIcon } from '@chakra-ui/icons';
+import { BiMap } from 'react-icons/bi';
+
+import { useAppDispatch, useAppSelector } from '../app/hooks';
 import { toggleFavorite } from '../redux/country/countrySlice';
 import { RootState } from '../app/store';
 
 const Details: FC = () => {
+  const { isOpen: isVisible, onClose, onOpen } = useDisclosure({ defaultIsOpen: false });
   const showCountry = useAppSelector((state: RootState) => state.countryR.showCountry);
   const isfavorite = useAppSelector((state: RootState) =>
     showCountry ? state.countryR.favoriteCountries.includes(showCountry.name.common) : false
   );
   const dispatch = useAppDispatch();
-  const { isOpen: isVisible, onClose, onOpen } = useDisclosure({ defaultIsOpen: false });
+
   const toggleFavoriteHandel = () => {
     showCountry && dispatch(toggleFavorite(showCountry.name.common));
     if (!isfavorite) {
@@ -40,6 +42,7 @@ const Details: FC = () => {
       }, 2000);
     }
   };
+
   return (
     <Card w="clamp(300px, 80%, 80rem)" m="0 auto" p="2rem">
       <CardHeader>

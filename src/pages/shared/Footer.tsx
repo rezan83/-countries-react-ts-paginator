@@ -10,7 +10,7 @@ import {
   Button
 } from '@chakra-ui/react';
 import { FaInstagram, FaTwitter, FaYoutube } from 'react-icons/fa';
-import { ReactNode } from 'react';
+import { FC, ReactNode } from 'react';
 import { Link } from 'react-router-dom';
 
 const SocialButton = ({
@@ -44,7 +44,7 @@ const SocialButton = ({
   );
 };
 
-export default function Footer() {
+const Footer: FC = () => {
   return (
     <Box
       className="footer"
@@ -90,4 +90,6 @@ export default function Footer() {
       </Box>
     </Box>
   );
-}
+};
+
+export default Footer;

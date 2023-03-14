@@ -15,6 +15,7 @@ import {
 } from '@chakra-ui/react';
 import { ArrowForwardIcon, StarIcon } from '@chakra-ui/icons';
 import { useNavigate } from 'react-router-dom';
+
 import { RootState } from '../../app/store';
 import { useAppDispatch, useAppSelector } from '../../app/hooks';
 import { fetchCountryByName, toggleFavorite } from '../../redux/country/countrySlice';

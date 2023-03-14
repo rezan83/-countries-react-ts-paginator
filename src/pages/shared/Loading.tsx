@@ -1,5 +1,5 @@
-import { Alert, AlertDescription, AlertIcon, AlertTitle, Spinner } from '@chakra-ui/react';
 import React, { FC } from 'react';
+import { Alert, AlertDescription, AlertIcon, AlertTitle, Spinner } from '@chakra-ui/react';
 
 interface ILoadingProps {
   loadingType: string;

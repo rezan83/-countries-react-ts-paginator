@@ -1,12 +1,17 @@
-import React from 'react';
+import React, { FC } from 'react';
 import { Box, Flex, Button, useColorModeValue, Stack, useColorMode } from '@chakra-ui/react';
 import { MoonIcon, StarIcon, SunIcon } from '@chakra-ui/icons';
 import { Link } from 'react-router-dom';
+
+import { RootState } from '../../app/store';
 import { useAppSelector } from '../../app/hooks';
 
-export default function Nav() {
-  const favoriteCount = useAppSelector(state => state.countryR.favoriteCountries.length);
+const Nav: FC = () => {
+  const favoriteCount = useAppSelector(
+    (state: RootState) => state.countryR.favoriteCountries.length
+  );
   const { colorMode, toggleColorMode } = useColorMode();
+
   return (
     <>
       <Box className="navbar" bg={useColorModeValue('gray.100', 'gray.900')} px={4}>
@@ -38,4 +43,6 @@ export default function Nav() {
       </Box>
     </>
   );
-}
+};
+
+export default Nav;

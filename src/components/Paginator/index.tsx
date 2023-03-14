@@ -1,37 +1,19 @@
-import React, { FC, useEffect, useMemo } from 'react';
+import React, { FC } from 'react';
 import { ArrowLeftIcon, ArrowRightIcon, ChevronLeftIcon, ChevronRightIcon } from '@chakra-ui/icons';
 import { Button, SimpleGrid } from '@chakra-ui/react';
-import { useAppDispatch, useAppSelector } from '../app/hooks';
-import { setSelectedPage } from '../redux/country/countrySlice';
+
+import { RootState } from '../../app/store';
+import { useAppDispatch, useAppSelector } from '../../app/hooks';
+import { setSelectedPage } from '../../redux/country/countrySlice';
+import PagerBtns from './PagerBtns';
 
 interface IPaginatorProps {
   pages: number;
 }
+
 const Paginator: FC<IPaginatorProps> = ({ pages }) => {
   const dispatch = useAppDispatch();
-  const selectedPage = useAppSelector(state => state.countryR.selectedPage);
-
-  const pagerBtns = useMemo(() => {
-    let pagerBtns: JSX.Element[] = [];
-    for (let index = 0; index < pages; index++) {
-      if (index < selectedPage + 4 && index > selectedPage - 4) {
-        pagerBtns.push(
-          <Button
-            size={'xs'}
-            bg={selectedPage === index ? 'blue.400' : ''}
-            onClick={() => chooseSelected(index + 1)}
-            variant={'link'}
-            key={index}>
-            {index + 1}
-          </Button>
-        );
-      }
-    }
-    return pagerBtns;
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [pages, selectedPage]);
-
-  useEffect(() => {}, [pagerBtns]);
+  const selectedPage = useAppSelector((state: RootState) => state.countryR.selectedPage);
 
   const chooseSelected = (num: number) => {
     dispatch(setSelectedPage(num));
@@ -43,6 +25,7 @@ const Paginator: FC<IPaginatorProps> = ({ pages }) => {
       dispatch(setSelectedPage(neuNum));
     }
   };
+
   return (
     <SimpleGrid columns={11} m="0 auto">
       <Button onClick={() => chooseSelected(1)}>
@@ -52,7 +35,7 @@ const Paginator: FC<IPaginatorProps> = ({ pages }) => {
         <ChevronLeftIcon />
       </Button>
 
-      {pagerBtns}
+      <PagerBtns pages={pages} selectedPage={selectedPage} chooseSelected={chooseSelected} />
 
       <Button onClick={() => changeSelected(1)}>
         <ChevronRightIcon />

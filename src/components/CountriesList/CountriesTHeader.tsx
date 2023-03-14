@@ -1,6 +1,7 @@
 import React, { FC } from 'react';
 import { Button, Switch, Thead, Th, Tr } from '@chakra-ui/react';
 import { ArrowDownIcon, ArrowUpIcon } from '@chakra-ui/icons';
+
 import { useAppDispatch, useAppSelector } from '../../app/hooks';
 import { toggleSortIsApplyed, toggleSortOrder } from '../../redux/country/countrySlice';
 import { RootState } from '../../app/store';
