@@ -22,15 +22,15 @@ const Paginator: FC<IPaginatorProps> = ({ pages }) => {
   };
 
   const changeSelected = (num: number) => {
-    const neuNum = selectedPage + num + 1;
-    if (neuNum <= pages && neuNum >= 1) {
+    const neuNum = selectedPage + num;
+    if (neuNum < pages && neuNum >= 0) {
       dispatch(setSelectedPage(neuNum));
     }
   };
 
   return (
     <SimpleGrid columns={11} m="0 auto">
-      <Button onClick={() => chooseSelected(1)}>
+      <Button onClick={() => chooseSelected(0)}>
         <ArrowLeftIcon />
       </Button>
       <Button onClick={() => changeSelected(-1)}>
@@ -42,7 +42,7 @@ const Paginator: FC<IPaginatorProps> = ({ pages }) => {
       <Button onClick={() => changeSelected(1)}>
         <ChevronRightIcon />
       </Button>
-      <Button onClick={() => chooseSelected(pages)}>
+      <Button onClick={() => chooseSelected(pages - 1)}>
         <ArrowRightIcon />
       </Button>
     </SimpleGrid>

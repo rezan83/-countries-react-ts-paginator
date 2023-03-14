@@ -21,7 +21,7 @@ const PagerBtns: FC<IPagerBtnsProps> = ({ pages, selectedPage, chooseSelected })
         display={toDisplau}
         size={'xs'}
         bg={selectedPage === index ? 'blue.400' : ''}
-        onClick={() => chooseSelected(index + 1)}
+        onClick={() => chooseSelected(index)}
         variant={'link'}
         key={index}>
         {`${index === pages - 1 ? '...' : ''} ${index + 1} ${index === 0 ? '...' : ''}`}

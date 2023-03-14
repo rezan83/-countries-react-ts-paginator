@@ -1,4 +1,4 @@
-import React, { FC, useEffect } from 'react';
+import React, { FC } from 'react';
 import { Table, Tbody, TableCaption, TableContainer } from '@chakra-ui/react';
 
 import { useAppSelector } from '../../app/hooks';
@@ -15,7 +15,7 @@ const CountriesList: FC<ICountriesProps> = ({ showFavorite }) => {
   const searchQuery = useAppSelector((state: RootState) => state.countryR.searchQuery);
   const favoriteCountries = useAppSelector((state: RootState) => state.countryR.favoriteCountries);
   const sortCountriesName = useAppSelector((state: RootState) => state.countryR.sortCountriesName);
-  const selectedPage = useAppSelector((state: RootState) => state.countryR.selectedPage);
+
   const sortCountriesPopulation = useAppSelector(
     (state: RootState) => state.countryR.sortCountriesPopulation
   );
@@ -58,7 +58,9 @@ const CountriesList: FC<ICountriesProps> = ({ showFavorite }) => {
     return { pageArr, pages };
   });
 
-  useEffect(() => {}, [pageArr]);
+  const selectedPage = useAppSelector((state: RootState) => {
+    return state.countryR.selectedPage > pages - 1 ? 0 : state.countryR.selectedPage;
+  });
 
   return (
     <>
@@ -68,11 +70,9 @@ const CountriesList: FC<ICountriesProps> = ({ showFavorite }) => {
           <CountriesTHeader />
 
           <Tbody>
-            {(!pageArr[selectedPage] ? pageArr[0] : pageArr[selectedPage]).map(
-              (country: ICountry) => {
-                return <Country key={country.name.common} country={country} />;
-              }
-            )}
+            {pageArr[selectedPage].map((country: ICountry) => {
+              return <Country key={country.name.common} country={country} />;
+            })}
           </Tbody>
         </Table>
       </TableContainer>
