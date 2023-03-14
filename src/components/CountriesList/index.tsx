@@ -1,8 +1,7 @@
-import React, { FC } from 'react';
+import React, { FC, useEffect } from 'react';
 import { Table, Tbody, TableCaption, TableContainer } from '@chakra-ui/react';
 
-import { useAppDispatch, useAppSelector } from '../../app/hooks';
-import { setSelectedPage } from '../../redux/country/countrySlice';
+import { useAppSelector } from '../../app/hooks';
 import { RootState } from '../../app/store';
 import { ICountry } from '../../interfaces/country';
 import Country from './Country';
@@ -13,7 +12,6 @@ interface ICountriesProps {
   showFavorite?: boolean;
 }
 const CountriesList: FC<ICountriesProps> = ({ showFavorite }) => {
-  const dispatch = useAppDispatch();
   const searchQuery = useAppSelector((state: RootState) => state.countryR.searchQuery);
   const favoriteCountries = useAppSelector((state: RootState) => state.countryR.favoriteCountries);
   const sortCountriesName = useAppSelector((state: RootState) => state.countryR.sortCountriesName);
@@ -46,7 +44,6 @@ const CountriesList: FC<ICountriesProps> = ({ showFavorite }) => {
       });
     }
     if (searchQuery) {
-      dispatch(setSelectedPage(1));
       countries = countries.filter(country => {
         return country.name.common.toLowerCase().includes(searchQuery);
       });
@@ -61,6 +58,8 @@ const CountriesList: FC<ICountriesProps> = ({ showFavorite }) => {
     return { pageArr, pages };
   });
 
+  useEffect(() => {}, [pageArr]);
+
   return (
     <>
       <TableContainer>
@@ -69,9 +68,11 @@ const CountriesList: FC<ICountriesProps> = ({ showFavorite }) => {
           <CountriesTHeader />
 
           <Tbody>
-            {pageArr[selectedPage].map((country: ICountry) => {
-              return <Country key={country.name.common} country={country} />;
-            })}
+            {(!pageArr[selectedPage] ? pageArr[0] : pageArr[selectedPage]).map(
+              (country: ICountry) => {
+                return <Country key={country.name.common} country={country} />;
+              }
+            )}
           </Tbody>
         </Table>
       </TableContainer>

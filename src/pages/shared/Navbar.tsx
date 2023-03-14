@@ -22,18 +22,21 @@ const Nav: FC = () => {
 
           <Flex alignItems={'center'}>
             <Stack direction={'row'} spacing={7}>
-              <Button>
-                <Link to="/countries">Countries</Link>
-              </Button>
-              <Button>
-                <Link to="/details">Details</Link>
-              </Button>
-              <Button>
-                <Link to="/favorite">
+              <Link to="/countries">
+                <Button>Countries </Button>
+              </Link>
+
+              <Link to="/details">
+                <Button>Details</Button>
+              </Link>
+
+              <Link to="/favorite">
+                <Button>
                   <StarIcon color={favoriteCount ? 'yellow.400' : ''} />
                   {favoriteCount}
-                </Link>
-              </Button>
+                </Button>
+              </Link>
+
               <Button onClick={toggleColorMode}>
                 {colorMode === 'light' ? <MoonIcon /> : <SunIcon />}
               </Button>

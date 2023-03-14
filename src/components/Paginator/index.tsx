@@ -13,7 +13,9 @@ interface IPaginatorProps {
 
 const Paginator: FC<IPaginatorProps> = ({ pages }) => {
   const dispatch = useAppDispatch();
-  const selectedPage = useAppSelector((state: RootState) => state.countryR.selectedPage);
+  const selectedPage = useAppSelector((state: RootState) => {
+    return state.countryR.selectedPage > pages - 1 ? 0 : state.countryR.selectedPage;
+  });
 
   const chooseSelected = (num: number) => {
     dispatch(setSelectedPage(num));
@@ -21,7 +23,7 @@ const Paginator: FC<IPaginatorProps> = ({ pages }) => {
 
   const changeSelected = (num: number) => {
     const neuNum = selectedPage + num + 1;
-    if (neuNum < pages && neuNum >= 1) {
+    if (neuNum <= pages && neuNum >= 1) {
       dispatch(setSelectedPage(neuNum));
     }
   };

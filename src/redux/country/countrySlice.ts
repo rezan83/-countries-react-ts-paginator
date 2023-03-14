@@ -45,7 +45,7 @@ const countrySlice = createSlice({
   initialState,
   reducers: {
     setSelectedPage: (state, action) => {
-      state.selectedPage = action.payload-1;
+      state.selectedPage = action.payload - 1;
     },
     setSearchQuery: (state, action) => {
       state.searchQuery = action.payload;
