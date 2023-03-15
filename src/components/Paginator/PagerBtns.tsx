@@ -10,12 +10,18 @@ const PagerBtns: FC<IPagerBtnsProps> = ({ pages, selectedPage, chooseSelected })
   let pagerBtns: JSX.Element[] = [];
   for (let index = 0; index < pages; index++) {
     const toDisplau = !(
-      (index < selectedPage + 3 && index > selectedPage - 3) ||
+      (index < selectedPage + 2 && index > selectedPage - 2) ||
       index === 0 ||
       index === pages - 1
     )
       ? 'none'
       : 'inline-block';
+    index === pages - 1 &&
+      pagerBtns.push(
+        <Button size={'xs'} onClick={() => chooseSelected(index)} variant={'link'} key={pages+index}>
+          {'...'}
+        </Button>
+      );
     pagerBtns.push(
       <Button
         display={toDisplau}
@@ -24,9 +30,15 @@ const PagerBtns: FC<IPagerBtnsProps> = ({ pages, selectedPage, chooseSelected })
         onClick={() => chooseSelected(index)}
         variant={'link'}
         key={index}>
-        {`${index === pages - 1 ? '...' : ''} ${index + 1} ${index === 0 ? '...' : ''}`}
+        {index + 1}
       </Button>
     );
+    index === 0 &&
+      pagerBtns.push(
+        <Button size={'xs'} onClick={() => chooseSelected(index)} variant={'link'} key={pages+index}>
+          {'...'}
+        </Button>
+      );
   }
 
   return <>{pagerBtns}</>;
