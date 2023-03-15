@@ -25,32 +25,41 @@ const SortCountries: FC = () => {
   const togglePopulationOrder = () => {
     dispatch(toggleSortOrder('population'));
   };
+
+  const sortBtnStyle = {
+    templateColumns: '1fr 3fr',
+    w: '11rem',
+    alignItems: 'center',
+    p: '.5rem',
+    boxShadow: '0 0 15px hsla(207, 73%, 57%, 0.5)',
+    rounded: 'md'
+  };
   return (
     <Thead>
       <Tr>
         <Th>Flag</Th>
         <Th>
-          <SimpleGrid  templateColumns="1fr 2fr" w="10rem" alignItems="center" bg={"#2c323d"}>
+          <SimpleGrid templateColumns="1fr 2fr" sx={sortBtnStyle}>
             <Switch
               size="md"
               isChecked={sortCountriesName.isApplyed}
               onChange={handleNameChecked}
             />
-            <Button onClick={toggleNameOrder} >
+            <Button onClick={toggleNameOrder}>
               Name {sortCountriesName.order > 0 ? <ArrowUpIcon /> : <ArrowDownIcon />}
             </Button>
           </SimpleGrid>
         </Th>
         <Th>
-        <SimpleGrid  templateColumns="1fr 2fr" w="10rem" alignItems="center" bg={"#2c323d"}>
-          <Switch
-            size="md"
-            isChecked={sortCountriesPopulation.isApplyed}
-            onChange={handlePopulationChecked}
-          />
-          <Button onClick={togglePopulationOrder}>
-            Population {sortCountriesPopulation.order > 0 ? <ArrowUpIcon /> : <ArrowDownIcon />}
-          </Button>
+          <SimpleGrid templateColumns="1fr 2fr" sx={sortBtnStyle}>
+            <Switch
+              size="md"
+              isChecked={sortCountriesPopulation.isApplyed}
+              onChange={handlePopulationChecked}
+            />
+            <Button onClick={togglePopulationOrder}>
+              Population {sortCountriesPopulation.order > 0 ? <ArrowUpIcon /> : <ArrowDownIcon />}
+            </Button>
           </SimpleGrid>
         </Th>
         <Th>Region</Th>
