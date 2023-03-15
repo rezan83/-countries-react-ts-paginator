@@ -5,8 +5,14 @@ interface IPagerBtnsProps {
   pages: number;
   selectedPage: number;
   chooseSelected: (num: number) => void;
+  pagerBtnsStyle: any;
 }
-const PagerBtns: FC<IPagerBtnsProps> = ({ pages, selectedPage, chooseSelected }) => {
+const PagerBtns: FC<IPagerBtnsProps> = ({
+  pages,
+  selectedPage,
+  chooseSelected,
+  pagerBtnsStyle
+}) => {
   let pagerBtns: JSX.Element[] = [];
   for (let index = 0; index < pages; index++) {
     const toDisplau = !(
@@ -17,15 +23,17 @@ const PagerBtns: FC<IPagerBtnsProps> = ({ pages, selectedPage, chooseSelected })
       ? 'none'
       : 'inline-block';
     index === pages - 1 &&
+      selectedPage < pages - 2 &&
       pagerBtns.push(
-        <Button size={'xs'} onClick={() => chooseSelected(index)} variant={'link'} key={pages+index}>
+        <Button sx={pagerBtnsStyle} size={'sm'} variant={'link'} key={pages + index}>
           {'...'}
         </Button>
       );
     pagerBtns.push(
       <Button
+        sx={pagerBtnsStyle}
         display={toDisplau}
-        size={'xs'}
+        size={'sm'}
         bg={selectedPage === index ? 'blue.400' : ''}
         onClick={() => chooseSelected(index)}
         variant={'link'}
@@ -34,8 +42,9 @@ const PagerBtns: FC<IPagerBtnsProps> = ({ pages, selectedPage, chooseSelected })
       </Button>
     );
     index === 0 &&
+      selectedPage > 1 &&
       pagerBtns.push(
-        <Button size={'xs'} onClick={() => chooseSelected(index)} variant={'link'} key={pages+index}>
+        <Button sx={pagerBtnsStyle} size={'sm'} variant={'link'} key={pages + index}>
           {'...'}
         </Button>
       );

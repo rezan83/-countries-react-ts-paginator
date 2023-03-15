@@ -1,5 +1,5 @@
 import React, { FC } from 'react';
-import { Button, Switch, Thead, Th, Tr, Box, SimpleGrid } from '@chakra-ui/react';
+import { Button, Switch, Thead, Th, Tr, SimpleGrid } from '@chakra-ui/react';
 import { ArrowDownIcon, ArrowUpIcon } from '@chakra-ui/icons';
 
 import { useAppDispatch, useAppSelector } from '../../app/hooks';

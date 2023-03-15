@@ -27,22 +27,24 @@ const Paginator: FC<IPaginatorProps> = ({ pages }) => {
       dispatch(setSelectedPage(neuNum));
     }
   };
-
+ const pagerBtnsStyle = {
+  w: '1rem'
+ }
   return (
-    <SimpleGrid columns={11} m="0 auto">
-      <Button onClick={() => chooseSelected(0)}>
+    <SimpleGrid columns={11} m="0 auto" w="fit-content">
+      <Button sx={pagerBtnsStyle} onClick={() => chooseSelected(0)}>
         <ArrowLeftIcon />
       </Button>
-      <Button onClick={() => changeSelected(-1)}>
+      <Button sx={pagerBtnsStyle} onClick={() => changeSelected(-1)}>
         <ChevronLeftIcon />
       </Button>
 
-      <PagerBtns pages={pages} selectedPage={selectedPage} chooseSelected={chooseSelected} />
+      <PagerBtns pages={pages} selectedPage={selectedPage} chooseSelected={chooseSelected} pagerBtnsStyle={pagerBtnsStyle} />
 
-      <Button onClick={() => changeSelected(1)}>
+      <Button sx={pagerBtnsStyle} onClick={() => changeSelected(1)}>
         <ChevronRightIcon />
       </Button>
-      <Button onClick={() => chooseSelected(pages - 1)}>
+      <Button sx={pagerBtnsStyle} onClick={() => chooseSelected(pages - 1)}>
         <ArrowRightIcon />
       </Button>
     </SimpleGrid>
