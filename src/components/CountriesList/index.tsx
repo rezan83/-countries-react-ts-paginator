@@ -7,56 +7,17 @@ import { ICountry } from '../../interfaces/country';
 import Country from './Country';
 import CountriesTHeader from './CountriesTHeader';
 import Paginator from '../Paginator';
+import { pageState } from '../../redux/country/countrySlice';
 
 interface ICountriesProps {
   showFavorite?: boolean;
 }
 const CountriesList: FC<ICountriesProps> = ({ showFavorite }) => {
-  const searchQuery = useAppSelector((state: RootState) => state.countryR.searchQuery);
-  const favoriteCountries = useAppSelector((state: RootState) => state.countryR.favoriteCountries);
-  const sortCountriesName = useAppSelector((state: RootState) => state.countryR.sortCountriesName);
-
-  const sortCountriesPopulation = useAppSelector(
-    (state: RootState) => state.countryR.sortCountriesPopulation
-  );
-  const { pageArr, pages } = useAppSelector((state: RootState) => {
-    let countries = [...state.countryR.countries];
-    if (sortCountriesName.isApplyed) {
-      countries.sort((country1, country2) => {
-        if (country1.name.common > country2.name.common) {
-          return sortCountriesName.order;
-        }
-        if (country1.name.common < country2.name.common) {
-          return -sortCountriesName.order;
-        }
-        return 0;
-      });
-    }
-    if (sortCountriesPopulation.isApplyed) {
-      countries.sort(
-        (country1, country2) =>
-          sortCountriesPopulation.order * (country1.population - country2.population)
-      );
-    }
-    if (showFavorite) {
-      countries = countries.filter(country => {
-        return favoriteCountries.includes(country.name.common);
-      });
-    }
-    if (searchQuery) {
-      countries = countries.filter(country => {
-        return country.name.common.toLowerCase().includes(searchQuery);
-      });
-    }
-    const count = 10;
-    const pages = Math.ceil(countries.length / count);
-
-    let pageArr: ICountry[][] = [];
-    for (let index = 0; index < pages; index++) {
-      pageArr.push(countries.slice(0 + count * index, count + count * index));
-    }
-    return { pageArr, pages };
-  });
+  const countPerPage = 10;
+  const { pageArray, pages } = pageState(
+    countPerPage,
+    showFavorite
+  )(useAppSelector(state => state));
 
   const selectedPage = useAppSelector((state: RootState) => {
     return state.countryR.selectedPage > pages - 1 ? 0 : state.countryR.selectedPage;
@@ -70,7 +31,7 @@ const CountriesList: FC<ICountriesProps> = ({ showFavorite }) => {
           <CountriesTHeader />
 
           <Tbody>
-            {pageArr[selectedPage].map((country: ICountry) => {
+            {pageArray[selectedPage].map((country: ICountry) => {
               return <Country key={country.name.common} country={country} />;
             })}
           </Tbody>

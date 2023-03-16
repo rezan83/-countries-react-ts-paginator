@@ -1,5 +1,6 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import countryAPI from '../../api/countryAPI';
+import { RootState } from '../../app/store';
 import { ICountry } from '../../interfaces/country';
 
 export const fetchCountryByName = createAsyncThunk(
@@ -121,8 +122,43 @@ export const {
   setSelectedPage
 } = countrySlice.actions;
 
-// The function below is called a selector and allows us to select a value from
-// the state. Selectors can also be defined inline where they're used instead of
-// in the slice file. For example: `useSelector((state: RootState) => state.countries.value)`
+export const pageState = (countPerPage:number = 10, showFavorite:boolean = false)=>({countryR}: RootState) => {
+  let countries = [...countryR.countries];
+  if (countryR.sortCountriesName.isApplyed) {
+    countries.sort((country1, country2) => {
+      if (country1.name.common > country2.name.common) {
+        return countryR.sortCountriesName.order;
+      }
+      if (country1.name.common < country2.name.common) {
+        return -countryR.sortCountriesName.order;
+      }
+      return 0;
+    });
+  }
+  if (countryR.sortCountriesPopulation.isApplyed) {
+    countries.sort(
+      (country1, country2) =>
+      countryR.sortCountriesPopulation.order * (country1.population - country2.population)
+    );
+  }
+  if (showFavorite) {
+    countries = countries.filter(country => {
+      return countryR.favoriteCountries.includes(country.name.common);
+    });
+  }
+  if (countryR.searchQuery) {
+    countries = countries.filter(country => {
+      return country.name.common.toLowerCase().includes(countryR.searchQuery);
+    });
+  }
+
+  const pages = Math.ceil(countries.length / countPerPage);
+
+  let pageArray: ICountry[][] = [];
+  for (let index = 0; index < pages; index++) {
+    pageArray.push(countries.slice(0 + countPerPage * index, countPerPage + countPerPage * index));
+  }
+  return { pageArray, pages };
+}
 
 export default countrySlice.reducer;
