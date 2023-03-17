@@ -2,49 +2,50 @@ import React, { FC } from 'react';
 import { Button } from '@chakra-ui/react';
 
 interface IPagerBtnsProps {
-  pages: number;
+  pagesCount: number;
   selectedPage: number;
-  chooseSelected: (num: number) => void;
+  chooseSelectedPage: (num: number) => void;
   pagerBtnsStyle: any;
 }
 const PagerBtns: FC<IPagerBtnsProps> = ({
-  pages,
+  pagesCount,
   selectedPage,
-  chooseSelected,
+  chooseSelectedPage,
   pagerBtnsStyle
 }) => {
   let pagerBtns: JSX.Element[] = [];
-  for (let index = 0; index < pages; index++) {
-    const toDisplau = !(
-      (index < selectedPage + 2 && index > selectedPage - 2) ||
-      index === 0 ||
-      index === pages - 1
+  for (let thisPage = 0; thisPage < pagesCount; thisPage++) {
+    // display only close to selected page
+    const isDisplay = !(
+      (thisPage < selectedPage + 2 && thisPage > selectedPage - 2) ||
+      thisPage === 0 ||
+      thisPage === pagesCount - 1
     )
       ? 'none'
       : 'inline-block';
-    index === pages - 1 &&
-      selectedPage < pages - 2 &&
+    thisPage === pagesCount - 1 &&
+      selectedPage < pagesCount - 2 &&
       pagerBtns.push(
-        <Button sx={pagerBtnsStyle} size={'sm'} variant={'link'} key={pages + index}>
+        <Button sx={pagerBtnsStyle} size={'sm'} variant={'link'} key={pagesCount + thisPage}>
           {'...'}
         </Button>
       );
     pagerBtns.push(
       <Button
         sx={pagerBtnsStyle}
-        display={toDisplau}
+        display={isDisplay}
         size={'sm'}
-        bg={selectedPage === index ? 'blue.400' : ''}
-        onClick={() => chooseSelected(index)}
+        bg={selectedPage === thisPage ? 'blue.400' : ''}
+        onClick={() => chooseSelectedPage(thisPage)}
         variant={'link'}
-        key={index}>
-        {index + 1}
+        key={thisPage}>
+        {thisPage + 1}
       </Button>
     );
-    index === 0 &&
+    thisPage === 0 &&
       selectedPage > 1 &&
       pagerBtns.push(
-        <Button sx={pagerBtnsStyle} size={'sm'} variant={'link'} key={pages + index}>
+        <Button sx={pagerBtnsStyle} size={'sm'} variant={'link'} key={pagesCount + thisPage}>
           {'...'}
         </Button>
       );

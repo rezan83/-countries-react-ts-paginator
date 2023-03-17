@@ -5,7 +5,7 @@ import { useAppSelector } from '../../app/hooks';
 import { RootState } from '../../app/store';
 import { ICountry } from '../../interfaces/country';
 import Country from './Country';
-import CountriesTHeader from './CountriesTHeader';
+import CountriesTHead from './CountriesTHead';
 import Paginator from '../Paginator';
 import { pageState } from '../../redux/country/countrySlice';
 
@@ -14,13 +14,11 @@ interface ICountriesProps {
 }
 const CountriesList: FC<ICountriesProps> = ({ showFavorite }) => {
   const countPerPage = 10;
-  const { pageArray, pages } = pageState(
-    countPerPage,
-    showFavorite
-  )(useAppSelector(state => state));
+
+  const { pagesArray, pagesCount } = useAppSelector(pageState(countPerPage, showFavorite));
 
   const selectedPage = useAppSelector((state: RootState) => {
-    return state.countryR.selectedPage > pages - 1 ? 0 : state.countryR.selectedPage;
+    return state.countryR.selectedPage > pagesCount - 1 ? 0 : state.countryR.selectedPage;
   });
 
   return (
@@ -28,16 +26,16 @@ const CountriesList: FC<ICountriesProps> = ({ showFavorite }) => {
       <TableContainer>
         <Table size="sm" variant="striped" colorScheme="teal">
           <TableCaption>List of all countries </TableCaption>
-          <CountriesTHeader />
+          <CountriesTHead />
 
           <Tbody>
-            {pageArray[selectedPage].map((country: ICountry) => {
+            {pagesArray.length>0 && pagesArray[selectedPage].map((country: ICountry) => {
               return <Country key={country.name.common} country={country} />;
             })}
           </Tbody>
         </Table>
       </TableContainer>
-      <Paginator pages={pages} />
+      <Paginator pagesCount={pagesCount} />
     </>
   );
 };

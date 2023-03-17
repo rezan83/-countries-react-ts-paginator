@@ -5,14 +5,14 @@ import { ICountry } from '../../interfaces/country';
 
 export const fetchCountryByName = createAsyncThunk(
   'countries/fetchByNameStatus',
-  async (countryName: string, thunkAPI) => {
+  async (countryName: string) => {
     const [response] = await countryAPI.fetchByName(countryName);
 
     return response;
   }
 );
 
-export const fetchAll = createAsyncThunk('countries/fetchAllStatus', async thunkAPI => {
+export const fetchAll = createAsyncThunk('countries/fetchAllStatus', async () => {
   const response = await countryAPI.fetchAll();
   return response;
 });
@@ -86,11 +86,11 @@ const countrySlice = createSlice({
     }
   },
   extraReducers: builder => {
-    builder.addCase(fetchAll.pending, (state, action) => {
+    builder.addCase(fetchAll.pending, (state) => {
       state.isLoading = true;
       state.isFetchError = false;
     });
-    builder.addCase(fetchCountryByName.pending, (state, action) => {
+    builder.addCase(fetchCountryByName.pending, (state) => {
       state.isLoading = true;
       state.isFetchError = false;
     });
@@ -104,11 +104,11 @@ const countrySlice = createSlice({
       state.isFetchError = false;
       state.countries = action.payload;
     });
-    builder.addCase(fetchAll.rejected, (state, action) => {
+    builder.addCase(fetchAll.rejected, (state) => {
       state.isLoading = false;
       state.isFetchError = true;
     });
-    builder.addCase(fetchCountryByName.rejected, (state, action) => {
+    builder.addCase(fetchCountryByName.rejected, (state) => {
       state.isLoading = false;
       state.isFetchError = true;
     });
@@ -155,15 +155,18 @@ export const pageState =
       });
     }
 
-    const pages = Math.ceil(countries.length / countPerPage);
+    const pagesCount = Math.ceil(countries.length / countPerPage);
 
-    let pageArray: ICountry[][] = [];
-    for (let index = 0; index < pages; index++) {
-      pageArray.push(
-        countries.slice(0 + countPerPage * index, countPerPage + countPerPage * index)
+    // divide the countries array into pages
+    let pagesArray: ICountry[][] = [];
+    for (let page = 0; page < pagesCount; page++) {
+      pagesArray.push(
+        countries.slice(countPerPage * page, countPerPage + countPerPage * page)
       );
     }
-    return { pageArray, pages };
+    
+    return { pagesArray, pagesCount};
   };
+
 
 export default countrySlice.reducer;

@@ -8,22 +8,23 @@ import { setSelectedPage } from '../../redux/country/countrySlice';
 import PagerBtns from './PagerBtns';
 
 interface IPaginatorProps {
-  pages: number;
+  pagesCount: number;
 }
 
-const Paginator: FC<IPaginatorProps> = ({ pages }) => {
+const Paginator: FC<IPaginatorProps> = ({ pagesCount }) => {
   const dispatch = useAppDispatch();
   const selectedPage = useAppSelector((state: RootState) => {
-    return state.countryR.selectedPage > pages - 1 ? 0 : state.countryR.selectedPage;
+    return state.countryR.selectedPage > pagesCount - 1 ? 0 : state.countryR.selectedPage;
   });
+  
 
-  const chooseSelected = (num: number) => {
+  const chooseSelectedPage = (num: number) => {
     dispatch(setSelectedPage(num));
   };
 
-  const changeSelected = (num: number) => {
+  const changeSelectedPage = (num: number) => {
     const neuNum = selectedPage + num;
-    if (neuNum < pages && neuNum >= 0) {
+    if (neuNum < pagesCount && neuNum >= 0) {
       dispatch(setSelectedPage(neuNum));
     }
   };
@@ -32,19 +33,19 @@ const Paginator: FC<IPaginatorProps> = ({ pages }) => {
  }
   return (
     <SimpleGrid columns={11} m="0 auto" w="fit-content">
-      <Button sx={pagerBtnsStyle} onClick={() => chooseSelected(0)}>
+      <Button sx={pagerBtnsStyle} onClick={() => chooseSelectedPage(0)}>
         <ArrowLeftIcon />
       </Button>
-      <Button sx={pagerBtnsStyle} onClick={() => changeSelected(-1)}>
+      <Button sx={pagerBtnsStyle} onClick={() => changeSelectedPage(-1)}>
         <ChevronLeftIcon />
       </Button>
 
-      <PagerBtns pages={pages} selectedPage={selectedPage} chooseSelected={chooseSelected} pagerBtnsStyle={pagerBtnsStyle} />
+      <PagerBtns pagesCount={pagesCount} selectedPage={selectedPage} chooseSelectedPage={chooseSelectedPage} pagerBtnsStyle={pagerBtnsStyle} />
 
-      <Button sx={pagerBtnsStyle} onClick={() => changeSelected(1)}>
+      <Button sx={pagerBtnsStyle} onClick={() => changeSelectedPage(1)}>
         <ChevronRightIcon />
       </Button>
-      <Button sx={pagerBtnsStyle} onClick={() => chooseSelected(pages - 1)}>
+      <Button sx={pagerBtnsStyle} onClick={() => chooseSelectedPage(pagesCount - 1)}>
         <ArrowRightIcon />
       </Button>
     </SimpleGrid>

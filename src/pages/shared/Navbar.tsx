@@ -4,13 +4,18 @@ import { MoonIcon, StarIcon, SunIcon } from '@chakra-ui/icons';
 import { Link } from 'react-router-dom';
 
 import { RootState } from '../../app/store';
-import { useAppSelector } from '../../app/hooks';
+import { useAppDispatch, useAppSelector } from '../../app/hooks';
+import { setSearchQuery } from '../../redux/country/countrySlice';
 
 const Nav: FC = () => {
+  const { colorMode, toggleColorMode } = useColorMode();
+  const dispatch = useAppDispatch()
   const favoriteCount = useAppSelector(
     (state: RootState) => state.countryR.favoriteCountries.length
   );
-  const { colorMode, toggleColorMode } = useColorMode();
+  const resetSearch = () => {
+    dispatch(setSearchQuery(''))
+  }
 
   return (
     <>
@@ -22,15 +27,15 @@ const Nav: FC = () => {
 
           <Flex alignItems={'center'}>
             <Stack direction={'row'} spacing={7}>
-              <Link to="/countries">
+              <Link to="/countries" onClick={resetSearch}>
                 <Button>Countries </Button>
               </Link>
 
-              <Link to="/details">
+              <Link to="/details" onClick={resetSearch}>
                 <Button>Details</Button>
               </Link>
 
-              <Link to="/favorite">
+              <Link to="/favorite" onClick={resetSearch}>
                 <Button>
                   <StarIcon color={favoriteCount ? 'yellow.400' : ''} />
                   {favoriteCount}
