@@ -4,9 +4,10 @@ import { RootState } from '../../app/store';
 import { ICountry } from '../../interfaces/country';
 
 export const fetchCountryByName = createAsyncThunk(
-  'countries/fetchByIdStatus',
+  'countries/fetchByNameStatus',
   async (countryName: string, thunkAPI) => {
     const [response] = await countryAPI.fetchByName(countryName);
+
     return response;
   }
 );
@@ -15,6 +16,7 @@ export const fetchAll = createAsyncThunk('countries/fetchAllStatus', async thunk
   const response = await countryAPI.fetchAll();
   return response;
 });
+
 interface ISort {
   isApplyed: boolean;
   order: number;
@@ -84,6 +86,14 @@ const countrySlice = createSlice({
     }
   },
   extraReducers: builder => {
+    builder.addCase(fetchAll.pending, (state, action) => {
+      state.isLoading = true;
+      state.isFetchError = false;
+    });
+    builder.addCase(fetchCountryByName.pending, (state, action) => {
+      state.isLoading = true;
+      state.isFetchError = false;
+    });
     builder.addCase(fetchCountryByName.fulfilled, (state, action) => {
       state.isLoading = false;
       state.isFetchError = false;
@@ -94,18 +104,9 @@ const countrySlice = createSlice({
       state.isFetchError = false;
       state.countries = action.payload;
     });
-
-    builder.addCase(fetchAll.pending, (state, action) => {
-      state.isLoading = true;
-      state.isFetchError = false;
-    });
     builder.addCase(fetchAll.rejected, (state, action) => {
       state.isLoading = false;
       state.isFetchError = true;
-    });
-    builder.addCase(fetchCountryByName.pending, (state, action) => {
-      state.isLoading = true;
-      state.isFetchError = false;
     });
     builder.addCase(fetchCountryByName.rejected, (state, action) => {
       state.isLoading = false;
@@ -122,43 +123,47 @@ export const {
   setSelectedPage
 } = countrySlice.actions;
 
-export const pageState = (countPerPage:number = 10, showFavorite:boolean = false)=>({countryR}: RootState) => {
-  let countries = [...countryR.countries];
-  if (countryR.sortCountriesName.isApplyed) {
-    countries.sort((country1, country2) => {
-      if (country1.name.common > country2.name.common) {
-        return countryR.sortCountriesName.order;
-      }
-      if (country1.name.common < country2.name.common) {
-        return -countryR.sortCountriesName.order;
-      }
-      return 0;
-    });
-  }
-  if (countryR.sortCountriesPopulation.isApplyed) {
-    countries.sort(
-      (country1, country2) =>
-      countryR.sortCountriesPopulation.order * (country1.population - country2.population)
-    );
-  }
-  if (showFavorite) {
-    countries = countries.filter(country => {
-      return countryR.favoriteCountries.includes(country.name.common);
-    });
-  }
-  if (countryR.searchQuery) {
-    countries = countries.filter(country => {
-      return country.name.common.toLowerCase().includes(countryR.searchQuery);
-    });
-  }
+export const pageState =
+  (countPerPage: number = 10, showFavorite: boolean = false) =>
+  ({ countryR }: RootState) => {
+    let countries = [...countryR.countries];
+    if (countryR.sortCountriesName.isApplyed) {
+      countries.sort((country1, country2) => {
+        if (country1.name.common > country2.name.common) {
+          return countryR.sortCountriesName.order;
+        }
+        if (country1.name.common < country2.name.common) {
+          return -countryR.sortCountriesName.order;
+        }
+        return 0;
+      });
+    }
+    if (countryR.sortCountriesPopulation.isApplyed) {
+      countries.sort(
+        (country1, country2) =>
+          countryR.sortCountriesPopulation.order * (country1.population - country2.population)
+      );
+    }
+    if (showFavorite) {
+      countries = countries.filter(country => {
+        return countryR.favoriteCountries.includes(country.name.common);
+      });
+    }
+    if (countryR.searchQuery) {
+      countries = countries.filter(country => {
+        return country.name.common.toLowerCase().includes(countryR.searchQuery);
+      });
+    }
 
-  const pages = Math.ceil(countries.length / countPerPage);
+    const pages = Math.ceil(countries.length / countPerPage);
 
-  let pageArray: ICountry[][] = [];
-  for (let index = 0; index < pages; index++) {
-    pageArray.push(countries.slice(0 + countPerPage * index, countPerPage + countPerPage * index));
-  }
-  return { pageArray, pages };
-}
+    let pageArray: ICountry[][] = [];
+    for (let index = 0; index < pages; index++) {
+      pageArray.push(
+        countries.slice(0 + countPerPage * index, countPerPage + countPerPage * index)
+      );
+    }
+    return { pageArray, pages };
+  };
 
 export default countrySlice.reducer;
