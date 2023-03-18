@@ -1,17 +1,5 @@
 import React, { FC } from 'react';
-import {
-  Tr,
-  Td,
-  Image,
-  Button,
-  useDisclosure,
-  Alert,
-  AlertIcon,
-  Box,
-  AlertTitle,
-  UnorderedList,
-  ListItem
-} from '@chakra-ui/react';
+import { Tr, Td, Image, Button, useDisclosure, UnorderedList, ListItem } from '@chakra-ui/react';
 import { ArrowForwardIcon, StarIcon } from '@chakra-ui/icons';
 import { useNavigate } from 'react-router-dom';
 
@@ -19,6 +7,7 @@ import { RootState } from '../../app/store';
 import { useAppDispatch, useAppSelector } from '../../app/hooks';
 import { fetchCountryByName, toggleFavorite } from '../../redux/country/countrySlice';
 import { ICountry } from '../../interfaces/country';
+import AddSuccess from '../AddSuccess';
 
 interface ICountryProps {
   country: ICountry;
@@ -75,12 +64,7 @@ const CountryT: FC<ICountryProps> = ({ country }) => {
       </Td>
       <Td>
         {isVisible ? (
-          <Alert status="success" position="absolute" right="0" bg="green.400">
-            <AlertIcon />
-            <Box>
-              <AlertTitle>Success! {country.name.common} added to favorites</AlertTitle>
-            </Box>
-          </Alert>
+          <AddSuccess countryName={country.name.common} />
         ) : (
           <Button onClick={toggleFavoriteHandel}>
             <StarIcon color={isfavorite ? 'yellow.400' : ''} />

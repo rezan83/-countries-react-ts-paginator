@@ -2,24 +2,23 @@ import React, { FC } from 'react';
 import { Table, Tbody, TableCaption, TableContainer } from '@chakra-ui/react';
 
 import { useAppDispatch, useAppSelector } from '../../app/hooks';
-import { RootState } from '../../app/store';
 import { ICountry } from '../../interfaces/country';
 import Country from './Country';
 import CountriesTHead from './CountriesTHead';
 import Paginator from '../Paginator';
-import { pageState, setSelectedPage } from '../../redux/country/countrySlice';
+import { pageState, selectedPageOrFirst, setSelectedPage } from '../../redux/country/countrySlice';
 
 interface ICountriesProps {
   showFavorite?: boolean;
   countPerPage: number;
 }
 const CountriesList: FC<ICountriesProps> = ({ showFavorite, countPerPage }) => {
+  
   const dispatch = useAppDispatch();
   const { pagesArray, pagesCount } = useAppSelector(pageState(countPerPage, showFavorite));
 
-  const selectedPage = useAppSelector((state: RootState) => {
-    return state.countryR.selectedPage > pagesCount - 1 ? 0 : state.countryR.selectedPage;
-  });
+  const selectedPage = useAppSelector(selectedPageOrFirst(pagesCount));
+
   const setPage = (num: number) => dispatch(setSelectedPage(num));
 
   return (

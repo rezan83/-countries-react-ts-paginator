@@ -12,10 +12,7 @@ import {
   Button,
   Avatar,
   SimpleGrid,
-  useDisclosure,
-  Alert,
-  AlertTitle,
-  AlertIcon
+  useDisclosure
 } from '@chakra-ui/react';
 import { StarIcon } from '@chakra-ui/icons';
 import { BiMap } from 'react-icons/bi';
@@ -23,6 +20,7 @@ import { BiMap } from 'react-icons/bi';
 import { useAppDispatch, useAppSelector } from '../app/hooks';
 import { toggleFavorite } from '../redux/country/countrySlice';
 import { RootState } from '../app/store';
+import AddSuccess from '../components/AddSuccess';
 
 const Details: FC = () => {
   const { isOpen: isVisible, onClose, onOpen } = useDisclosure({ defaultIsOpen: false });
@@ -90,12 +88,7 @@ const Details: FC = () => {
             </a>
 
             {isVisible ? (
-              <Alert status="success" position="absolute" right="0" bg="green.400">
-                <AlertIcon />
-                <Box>
-                  <AlertTitle>Success! {showCountry.name.common} added to favorites</AlertTitle>
-                </Box>
-              </Alert>
+              <AddSuccess countryName={showCountry.name.common} />
             ) : (
               <Button onClick={toggleFavoriteHandel}>
                 <StarIcon color={isfavorite ? 'yellow.400' : ''} />

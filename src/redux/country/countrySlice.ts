@@ -6,6 +6,7 @@ import { ICountry } from '../../interfaces/country';
 export const fetchCountryByName = createAsyncThunk(
   'countries/fetchByNameStatus',
   async (countryName: string) => {
+    // because this is only for details page not for search
     const [response] = await countryAPI.fetchByName(countryName);
 
     return response;
@@ -86,11 +87,11 @@ const countrySlice = createSlice({
     }
   },
   extraReducers: builder => {
-    builder.addCase(fetchAll.pending, (state) => {
+    builder.addCase(fetchAll.pending, state => {
       state.isLoading = true;
       state.isFetchError = false;
     });
-    builder.addCase(fetchCountryByName.pending, (state) => {
+    builder.addCase(fetchCountryByName.pending, state => {
       state.isLoading = true;
       state.isFetchError = false;
     });
@@ -104,11 +105,11 @@ const countrySlice = createSlice({
       state.isFetchError = false;
       state.countries = action.payload;
     });
-    builder.addCase(fetchAll.rejected, (state) => {
+    builder.addCase(fetchAll.rejected, state => {
       state.isLoading = false;
       state.isFetchError = true;
     });
-    builder.addCase(fetchCountryByName.rejected, (state) => {
+    builder.addCase(fetchCountryByName.rejected, state => {
       state.isLoading = false;
       state.isFetchError = true;
     });
@@ -123,6 +124,7 @@ export const {
   setSelectedPage
 } = countrySlice.actions;
 
+// all side effect of sort, filter, favorite and search
 export const pageState =
   (countPerPage: number = 10, showFavorite: boolean = false) =>
   ({ countryR }: RootState) => {
@@ -156,17 +158,20 @@ export const pageState =
     }
 
     const pagesCount = Math.ceil(countries.length / countPerPage);
-
     // divide the countries array into pages
     let pagesArray: ICountry[][] = [];
     for (let page = 0; page < pagesCount; page++) {
-      pagesArray.push(
-        countries.slice(countPerPage * page, countPerPage + countPerPage * page)
-      );
+      pagesArray.push(countries.slice(countPerPage * page, countPerPage + countPerPage * page));
     }
-    
-    return { pagesArray, pagesCount};
+
+    return { pagesArray, pagesCount };
   };
 
+// show first page as side effect in case array length change 
+// (favorite and search) and is less than selected page to prevent errors
+export const selectedPageOrFirst =
+  (pagesCount: number) =>
+  ({ countryR }: RootState) =>
+    countryR.selectedPage > pagesCount - 1 ? 0 : countryR.selectedPage;
 
 export default countrySlice.reducer;
