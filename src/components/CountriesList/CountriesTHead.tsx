@@ -35,7 +35,7 @@ const SortCountries: FC = () => {
     rounded: 'md'
   };
   return (
-    <Thead>
+    <Thead h="min(6rem)">
       <Tr>
         <Th>Flag</Th>
         <Th>

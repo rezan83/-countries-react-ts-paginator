@@ -15,7 +15,6 @@ import {
   useDisclosure,
   Alert,
   AlertTitle,
-  AlertDescription,
   AlertIcon
 } from '@chakra-ui/react';
 import { StarIcon } from '@chakra-ui/icons';
@@ -94,8 +93,7 @@ const Details: FC = () => {
               <Alert status="success" position="absolute" right="0" bg="green.400">
                 <AlertIcon />
                 <Box>
-                  <AlertTitle>Success!</AlertTitle>
-                  <AlertDescription>{showCountry.name.common} added to favorites</AlertDescription>
+                  <AlertTitle>Success! {showCountry.name.common} added to favorites</AlertTitle>
                 </Box>
               </Alert>
             ) : (

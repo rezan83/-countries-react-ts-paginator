@@ -8,7 +8,6 @@ import {
   Alert,
   AlertIcon,
   Box,
-  AlertDescription,
   AlertTitle,
   UnorderedList,
   ListItem
@@ -31,9 +30,11 @@ const CountryT: FC<ICountryProps> = ({ country }) => {
   );
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
+  // controll add success alert
   const { isOpen: isVisible, onClose, onOpen } = useDisclosure({ defaultIsOpen: false });
   const toggleFavoriteHandel = () => {
     dispatch(toggleFavorite(country.name.common));
+    // show success alert for two seconds
     if (!isfavorite) {
       onOpen();
       setTimeout(() => {
@@ -65,7 +66,6 @@ const CountryT: FC<ICountryProps> = ({ country }) => {
       <Td>{country.population}</Td>
       <Td>{country.region}</Td>
       <Td>
-        {' '}
         <UnorderedList>
           {country.languages &&
             Object.values(country.languages).map(lang => {
@@ -78,8 +78,7 @@ const CountryT: FC<ICountryProps> = ({ country }) => {
           <Alert status="success" position="absolute" right="0" bg="green.400">
             <AlertIcon />
             <Box>
-              <AlertTitle>Success!</AlertTitle>
-              <AlertDescription>{country.name.common} added to favorites</AlertDescription>
+              <AlertTitle>Success! {country.name.common} added to favorites</AlertTitle>
             </Box>
           </Alert>
         ) : (

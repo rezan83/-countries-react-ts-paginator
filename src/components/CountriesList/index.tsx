@@ -29,9 +29,10 @@ const CountriesList: FC<ICountriesProps> = ({ showFavorite }) => {
           <CountriesTHead />
 
           <Tbody>
-            {pagesArray.length>0 && pagesArray[selectedPage].map((country: ICountry) => {
-              return <Country key={country.name.common} country={country} />;
-            })}
+            {pagesArray.length > 0 &&
+              pagesArray[selectedPage].map((country: ICountry) => {
+                return <Country key={country.name.common} country={country} />;
+              })}
           </Tbody>
         </Table>
       </TableContainer>
