@@ -10,7 +10,7 @@ const Countries: FC<ICountriesProps> = ({ showFavorite }) => {
   return (
     <div className="countries">
       <SearchCountries />
-      <CountriesList showFavorite={showFavorite} />
+      <CountriesList showFavorite={showFavorite} countPerPage={10} />
     </div>
   );
 };
