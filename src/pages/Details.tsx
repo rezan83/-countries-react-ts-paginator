@@ -57,19 +57,29 @@ const Details: FC = () => {
         <>
           <CardBody>
             <SimpleGrid columns={2} minChildWidth="120px" spacing="2rem">
-              <Text>
-                {`Official Name: ${showCountry?.name.official}, Region ${
-                  showCountry?.region
-                }, Subregion
-          ${showCountry?.subregion}, Capital: ${showCountry?.capital && showCountry?.capital[0]},
-          Population: ${showCountry?.population}, Official Languages:
-          ${
-            showCountry?.languages && Object.values(showCountry?.languages).map(lang => `${lang} `)
-          }, Money:
-          ${
-            showCountry?.currencies && Object.values(showCountry?.currencies).map(curr => curr.name)
-          },
-          Area: ${showCountry?.area} square kilometers`}
+              <Text as={'section'}>
+                <p> Official Name: {showCountry?.name.official},</p>
+                <p> Region: {showCountry?.region},</p>
+                <p> Subregion {showCountry?.subregion},</p>
+                <p> Capital: {showCountry?.capital && showCountry?.capital[0]},</p>
+                <p> Population: {showCountry?.population},</p>
+                <p>
+                  Official Languages:{' '}
+                  {showCountry?.languages &&
+                    Object.values(showCountry?.languages).map(
+                      (lang, i) => `${i + 1 + '-' + lang} `
+                    )}
+                  ,
+                </p>
+                <p>
+                  Money:{' '}
+                  {showCountry?.currencies &&
+                    Object.values(showCountry?.currencies).map(
+                      (curr, i) => `${i + 1 + '-' + curr.name} `
+                    )}
+                  ,
+                </p>
+                <p>Area: {showCountry?.area} square kilometers</p>
               </Text>
               <Image objectFit="contain" src={showCountry?.flags.png} alt="flag" />
             </SimpleGrid>
