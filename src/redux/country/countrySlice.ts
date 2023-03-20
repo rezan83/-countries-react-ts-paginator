@@ -125,8 +125,8 @@ export const {
 } = countrySlice.actions;
 
 // all side effect of sort, filter, favorite and search
-export const pageState =
-  (countPerPage: number = 10, showFavorite: boolean = false) =>
+export const countriesState =
+  (showFavorite: boolean = false) =>
   ({ countryR }: RootState) => {
     let countries = [...countryR.countries];
     if (countryR.sortCountriesName.isApplyed) {
@@ -157,21 +157,7 @@ export const pageState =
       });
     }
 
-    const pagesCount = Math.ceil(countries.length / countPerPage);
-    // divide the countries array into pages
-    let pagesArray: ICountry[][] = [];
-    for (let page = 0; page < pagesCount; page++) {
-      pagesArray.push(countries.slice(countPerPage * page, countPerPage + countPerPage * page));
-    }
-
-    return { pagesArray, pagesCount };
+    return countries;
   };
-
-// show first page as side effect in case array length change 
-// (favorite and search) and is less than selected page to prevent errors
-export const selectedPageOrFirst =
-  (pagesCount: number) =>
-  ({ countryR }: RootState) =>
-    countryR.selectedPage > pagesCount - 1 ? 0 : countryR.selectedPage;
 
 export default countrySlice.reducer;

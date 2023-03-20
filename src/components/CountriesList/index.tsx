@@ -5,21 +5,25 @@ import { useAppDispatch, useAppSelector } from '../../app/hooks';
 import { ICountry } from '../../interfaces/country';
 import Country from './Country';
 import CountriesTHead from './CountriesTHead';
-import Paginator from '../Paginator';
-import { pageState, selectedPageOrFirst, setSelectedPage } from '../../redux/country/countrySlice';
+import { countriesState, setSelectedPage } from '../../redux/country/countrySlice';
+import Paginator, { usePagesState } from '../Paginator';
 
 interface ICountriesProps {
   showFavorite?: boolean;
   countPerPage: number;
 }
 const CountriesList: FC<ICountriesProps> = ({ showFavorite, countPerPage }) => {
-  
   const dispatch = useAppDispatch();
-  const { pagesArray, pagesCount } = useAppSelector(pageState(countPerPage, showFavorite));
 
-  const selectedPage = useAppSelector(selectedPageOrFirst(pagesCount));
+  const countries = useAppSelector(countriesState(showFavorite));
+  const selectedPage = useAppSelector(state => state.countryR.selectedPage);
+  const dispatchSetSelectedPage = (num: number) => dispatch(setSelectedPage(num));
 
-  const setPage = (num: number) => dispatch(setSelectedPage(num));
+  const { pagesCount, selectedPageOrFirst, pagesArray } = usePagesState<ICountry>(
+    countries,
+    countPerPage,
+    selectedPage
+  );
 
   return (
     <>
@@ -30,13 +34,17 @@ const CountriesList: FC<ICountriesProps> = ({ showFavorite, countPerPage }) => {
 
           <Tbody>
             {pagesArray.length > 0 &&
-              pagesArray[selectedPage].map((country: ICountry) => {
+              pagesArray[selectedPageOrFirst].map((country: ICountry) => {
                 return <Country key={country.name.common} country={country} />;
               })}
           </Tbody>
         </Table>
       </TableContainer>
-      <Paginator pagesCount={pagesCount} selectedPage={selectedPage} setSelectedPage={setPage} />
+      <Paginator
+        pagesCount={pagesCount}
+        selectedPage={selectedPageOrFirst}
+        setSelectedPage={dispatchSetSelectedPage}
+      />
     </>
   );
 };
