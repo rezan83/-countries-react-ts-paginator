@@ -1,5 +1,15 @@
 import React, { FC } from 'react';
-import { Table, Tbody, TableCaption, TableContainer } from '@chakra-ui/react';
+import {
+  Table,
+  Tbody,
+  TableCaption,
+  TableContainer,
+  Card,
+  CardHeader,
+  Box,
+  Flex,
+  Heading
+} from '@chakra-ui/react';
 
 import { useAppDispatch, useAppSelector } from '../../app/hooks';
 import { ICountry } from '../../interfaces/country';
@@ -29,22 +39,38 @@ const CountriesList: FC<ICountriesProps> = ({ showFavorite, countPerPage }) => {
     <>
       <TableContainer>
         <Table size="sm" variant="striped" colorScheme="teal">
-          <TableCaption>List of all countries </TableCaption>
+          <TableCaption>
+            List of all countries:
+            {!pagesArray.length && (
+              <Card w="clamp(300px, 80%, 80rem)" m="0 auto" p="2rem">
+                <CardHeader>
+                  <Flex flex="1" gap="4" alignItems="center" flexWrap="wrap">
+                    <Box>
+                      <Heading size="sm">Sorry nothing to show</Heading>
+                    </Box>
+                  </Flex>
+                </CardHeader>
+              </Card>
+            )}{' '}
+          </TableCaption>
+
           <CountriesTHead />
 
           <Tbody>
-            {pagesArray.length > 0 &&
+            {!!pagesArray.length &&
               pagesArray[selectedPageOrFirst].map((country: ICountry) => {
                 return <Country key={country.name.common} country={country} />;
               })}
           </Tbody>
         </Table>
       </TableContainer>
-      <Paginator
-        pagesCount={pagesCount}
-        selectedPage={selectedPageOrFirst}
-        setSelectedPage={dispatchSetSelectedPage}
-      />
+      {!!pagesArray.length && (
+        <Paginator
+          pagesCount={pagesCount}
+          selectedPage={selectedPageOrFirst}
+          setSelectedPage={dispatchSetSelectedPage}
+        />
+      )}
     </>
   );
 };
