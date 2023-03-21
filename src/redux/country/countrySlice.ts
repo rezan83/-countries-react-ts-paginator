@@ -1,4 +1,5 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
+// import { rejectWithValue } from 'axios';
 import countryAPI from '../../api/countryAPI';
 import { RootState } from '../../app/store';
 import { ICountry } from '../../interfaces/country';
@@ -8,12 +9,11 @@ export const fetchCountryByName = createAsyncThunk(
   async (countryName: string) => {
     // because this is only for details page not for search
     const [response] = await countryAPI.fetchByName(countryName);
-
     return response;
   }
 );
 
-export const fetchAll = createAsyncThunk('countries/fetchAllStatus', async () => {
+export const fetchAll = createAsyncThunk<ICountry[]>('countries/fetchAllStatus', async () => {
   const response = await countryAPI.fetchAll();
   return response;
 });
@@ -31,6 +31,7 @@ interface IState {
   showCountry: ICountry | null;
   isLoading: boolean;
   isFetchError: boolean;
+  errorMessage: string;
   selectedPage: number;
 }
 const initialState: IState = {
@@ -42,6 +43,7 @@ const initialState: IState = {
   showCountry: null,
   isLoading: true,
   isFetchError: false,
+  errorMessage: '',
   selectedPage: 0
 };
 const countrySlice = createSlice({
@@ -105,13 +107,15 @@ const countrySlice = createSlice({
       state.isFetchError = false;
       state.countries = action.payload;
     });
-    builder.addCase(fetchAll.rejected, state => {
+    builder.addCase(fetchAll.rejected, (state, action) => {
       state.isLoading = false;
       state.isFetchError = true;
+      state.errorMessage = action.error.message || 'Something wrong happend';
     });
-    builder.addCase(fetchCountryByName.rejected, state => {
+    builder.addCase(fetchCountryByName.rejected, (state, action) => {
       state.isLoading = false;
       state.isFetchError = true;
+      state.errorMessage = action.error.message || 'Something wrong happend';
     });
   }
 });

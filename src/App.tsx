@@ -13,7 +13,6 @@ import Loading from './pages/shared/Loading';
 import theme from './theme';
 
 function App() {
-  
   const isFetchError = useAppSelector(state => state.countryR.isFetchError);
   const isLoading = useAppSelector(state => state.countryR.isLoading);
   const dispatch = useAppDispatch();
@@ -29,15 +28,16 @@ function App() {
         <Navbar />
         <Routes>
           <Route path="/" element={<Hero />} />
-          <Route path="/countries" element={
-           <>
-           {isFetchError && <Loading loadingType="error" />}
-           {isLoading && <Loading loadingType="loading" />}
-           {!isLoading && <Countries />}
-         </>
-          
-          
-          } />
+          <Route
+            path="/countries"
+            element={
+              <>
+                {isFetchError && <Loading loadingType="error" />}
+                {isLoading && <Loading loadingType="loading" />}
+                {!isLoading && <Countries />}
+              </>
+            }
+          />
           <Route
             path="/favorite"
             element={

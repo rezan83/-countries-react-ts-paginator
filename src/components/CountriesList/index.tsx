@@ -41,7 +41,7 @@ const CountriesList: FC<ICountriesProps> = ({ showFavorite, countPerPage }) => {
         <Table size="sm" variant="striped" colorScheme="teal">
           <TableCaption>
             List of all countries:
-            {!pagesArray.length && (
+            {!pagesArray.length  && (
               <Card w="clamp(300px, 80%, 80rem)" m="0 auto" p="2rem">
                 <CardHeader>
                   <Flex flex="1" gap="4" alignItems="center" flexWrap="wrap">
@@ -64,7 +64,7 @@ const CountriesList: FC<ICountriesProps> = ({ showFavorite, countPerPage }) => {
           </Tbody>
         </Table>
       </TableContainer>
-      {!!pagesArray.length && (
+      {pagesArray.length > 1 && (
         <Paginator
           pagesCount={pagesCount}
           selectedPage={selectedPageOrFirst}
