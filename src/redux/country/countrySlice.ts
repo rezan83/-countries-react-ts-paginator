@@ -32,7 +32,7 @@ interface IState {
   isLoading: boolean;
   isFetchError: boolean;
   errorMessage: string;
-  selectedPage: number;
+  // selectedPage: number;
 }
 const initialState: IState = {
   countries: [],
@@ -43,16 +43,16 @@ const initialState: IState = {
   showCountry: null,
   isLoading: true,
   isFetchError: false,
-  errorMessage: '',
-  selectedPage: 0
+  errorMessage: ''
+  // selectedPage: 0
 };
 const countrySlice = createSlice({
   name: 'countries',
   initialState,
   reducers: {
-    setSelectedPage: (state, action) => {
-      state.selectedPage = action.payload;
-    },
+    // setSelectedPage: (state, action) => {
+    //   state.selectedPage = action.payload;
+    // },
     setSearchQuery: (state, action) => {
       state.searchQuery = action.payload;
     },
@@ -120,13 +120,8 @@ const countrySlice = createSlice({
   }
 });
 
-export const {
-  setSearchQuery,
-  toggleFavorite,
-  toggleSortIsApplyed,
-  toggleSortOrder,
-  setSelectedPage
-} = countrySlice.actions;
+export const { setSearchQuery, toggleFavorite, toggleSortIsApplyed, toggleSortOrder } =
+  countrySlice.actions;
 
 // all side effect of sort, filter, favorite and search
 export const countriesState =

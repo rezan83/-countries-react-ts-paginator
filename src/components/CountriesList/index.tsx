@@ -11,11 +11,11 @@ import {
   Heading
 } from '@chakra-ui/react';
 
-import { useAppDispatch, useAppSelector } from '../../app/hooks';
+import { useAppSelector } from '../../app/hooks';
 import { ICountry } from '../../interfaces/country';
 import Country from './Country';
 import CountriesTHead from './CountriesTHead';
-import { countriesState, setSelectedPage } from '../../redux/country/countrySlice';
+import { countriesState } from '../../redux/country/countrySlice';
 import Paginator, { usePagesState } from '../Paginator';
 
 interface ICountriesProps {
@@ -23,25 +23,19 @@ interface ICountriesProps {
   countPerPage: number;
 }
 const CountriesList: FC<ICountriesProps> = ({ showFavorite, countPerPage }) => {
-  const dispatch = useAppDispatch();
-
   const countries = useAppSelector(countriesState(showFavorite));
-  const selectedPage = useAppSelector(state => state.countryR.selectedPage);
-  const dispatchSetSelectedPage = (num: number) => dispatch(setSelectedPage(num));
 
-  const { pagesCount, selectedPageOrFirst, pagesArray } = usePagesState<ICountry>(
+  const { pagesCount, selectedPage, setSelectedPage, pagesArray } = usePagesState<ICountry>(
     countries,
-    countPerPage,
-    selectedPage
+    countPerPage
   );
-
   return (
     <>
       <TableContainer>
         <Table size="sm" variant="striped" colorScheme="teal">
           <TableCaption>
             List of all countries:
-            {!pagesArray.length  && (
+            {!pagesArray.length && (
               <Card w="clamp(300px, 80%, 80rem)" m="0 auto" p="2rem">
                 <CardHeader>
                   <Flex flex="1" gap="4" alignItems="center" flexWrap="wrap">
@@ -58,7 +52,7 @@ const CountriesList: FC<ICountriesProps> = ({ showFavorite, countPerPage }) => {
 
           <Tbody>
             {!!pagesArray.length &&
-              pagesArray[selectedPageOrFirst].map((country: ICountry) => {
+              pagesArray[selectedPage].map((country: ICountry) => {
                 return <Country key={country.name.common} country={country} />;
               })}
           </Tbody>
@@ -67,8 +61,8 @@ const CountriesList: FC<ICountriesProps> = ({ showFavorite, countPerPage }) => {
       {pagesArray.length > 1 && (
         <Paginator
           pagesCount={pagesCount}
-          selectedPage={selectedPageOrFirst}
-          setSelectedPage={dispatchSetSelectedPage}
+          selectedPage={selectedPage}
+          setSelectedPage={setSelectedPage}
         />
       )}
     </>
