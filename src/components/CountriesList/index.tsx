@@ -16,7 +16,9 @@ import { ICountry } from '../../interfaces/country';
 import Country from './Country';
 import CountriesTHead from './CountriesTHead';
 import { countriesState } from '../../redux/country/countrySlice';
-import Paginator, { usePagesState } from '../Paginator';
+// import Paginator, { usePagesState } from '../Paginator';
+// paginator turned to npm package!
+import Paginator, { usePagesState } from 'paginatorx-chakra';
 
 interface ICountriesProps {
   showFavorite?: boolean;
@@ -25,7 +27,7 @@ interface ICountriesProps {
 const CountriesList: FC<ICountriesProps> = ({ showFavorite, countPerPage }) => {
   const countries = useAppSelector(countriesState(showFavorite));
 
-  const { pagesCount, selectedPage, setSelectedPage, pagesArray } = usePagesState<ICountry>(
+  const { pagesCount, selectedPage, setSelectedPage, pages } = usePagesState<ICountry>(
     countries,
     countPerPage
   );
@@ -35,7 +37,7 @@ const CountriesList: FC<ICountriesProps> = ({ showFavorite, countPerPage }) => {
         <Table size="sm" variant="striped" colorScheme="teal">
           <TableCaption>
             List of all countries:
-            {!pagesArray.length && (
+            {!pages.length && (
               <Card w="clamp(300px, 80%, 80rem)" m="0 auto" p="2rem">
                 <CardHeader>
                   <Flex flex="1" gap="4" alignItems="center" flexWrap="wrap">
@@ -51,14 +53,14 @@ const CountriesList: FC<ICountriesProps> = ({ showFavorite, countPerPage }) => {
           <CountriesTHead />
 
           <Tbody>
-            {!!pagesArray.length &&
-              pagesArray[selectedPage].map((country: ICountry) => {
+            {!!pages.length &&
+              pages[selectedPage].map((country: ICountry) => {
                 return <Country key={country.name.common} country={country} />;
               })}
           </Tbody>
         </Table>
       </TableContainer>
-      {pagesArray.length > 1 && (
+      {pages.length > 1 && (
         <Paginator
           pagesCount={pagesCount}
           selectedPage={selectedPage}
