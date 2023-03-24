@@ -7,7 +7,7 @@ interface IAddSuccessProps {
 const AddSuccess: FC<IAddSuccessProps> = ({ countryName }) => {
   return (
     <>
-      <Alert status="success" position="absolute" right="0" bg="green.400">
+      <Alert status="success" position="absolute" right="10%" bg="green.400" w='80%'>
         <AlertIcon />
         <Box>
           <AlertTitle>Success! {countryName} added to favorites</AlertTitle>

@@ -16,9 +16,9 @@ import { ICountry } from '../../interfaces/country';
 import Country from './Country';
 import CountriesTHead from './CountriesTHead';
 import { countriesState } from '../../redux/country/countrySlice';
-// import Paginator, { usePagesState } from '../Paginator';
+// import Paginator, { usePaginator } from '../Paginator';
 // paginator turned to npm package!
-import Paginator, { usePagesState } from 'paginatorx-chakra';
+import Paginator, { usePaginator } from 'paginatorx-chakra';
 
 interface ICountriesProps {
   showFavorite?: boolean;
@@ -27,7 +27,7 @@ interface ICountriesProps {
 const CountriesList: FC<ICountriesProps> = ({ showFavorite, countPerPage }) => {
   const countries = useAppSelector(countriesState(showFavorite));
 
-  const { pagesCount, selectedPage, setSelectedPage, pages } = usePagesState<ICountry>(
+  const { pagesCount, selectedPage, setSelectedPage, pages } = usePaginator<ICountry>(
     countries,
     countPerPage
   );
