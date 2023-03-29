@@ -62,6 +62,8 @@ ONLY DO THIS PART WHEN YOU HAVE COMPLETED THE REQUIREMENTS PART
 
 ## Screenshots
 
-![Country list](https://raw.githubusercontent.com/Andreaa-Dev/Country-list/master/src/images/allCountries.png)
+![Country list](./src/images/list.png)
 
-![Country detail](https://raw.githubusercontent.com/Andreaa-Dev/Country-list/master/src/images/eachCountry.png)
+![Country detail](./src/images/details.png)
+
+![Pagintator](./src/images/paginator.png)
